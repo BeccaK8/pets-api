@@ -71,6 +71,9 @@ Toy is comprised of the following:
     }
 ```
 
+ERD goes here when ready
+
+
 ## Routes
 
 ### Authentication Routes
