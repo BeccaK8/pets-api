@@ -29,9 +29,26 @@ const router = express.Router()
 
 // INDEX
 // GET /pets
-router.get('/pets', requireToken, (req, res, next) => {
+router.get('/pets', (req, res, next) => {
 	Pet.find()
     .populate('owner')
+		.then((pets) => {
+			// `pets` will be an array of Mongoose documents
+			// we want to convert each one to a POJO, so we use `.map` to
+			// apply `.toObject` to each one
+			return pets.map((pet) => pet.toObject())
+		})
+		// respond with status 200 and JSON of the pets
+		.then((pets) => res.status(200).json({ pets: pets }))
+		// if an error occurs, pass it to the handler
+		.catch(next)
+})
+
+// show route for only the logged in user's pets
+// GET /pets/mine
+// requireToken gives us access to req.user.id
+router.get('/pets/mine', requireToken, (req, res, next) => {
+	Pet.find({ owner: req.user.id })
 		.then((pets) => {
 			// `pets` will be an array of Mongoose documents
 			// we want to convert each one to a POJO, so we use `.map` to
