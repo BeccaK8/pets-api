@@ -34,6 +34,12 @@ mongoose.connect(db, {useNewUrlParser: true})
                         // VERY IMPORTANT
                         mongoose.connection.close();
                     })
+                    .catch(error => {
+                        console.log('an error has occurred: \n', error);
+        
+                        // VERY IMPORTANT
+                        mongoose.connection.close();
+                    })
             })
             .catch(error => {
                 console.log('an error has occurred: \n', error);
